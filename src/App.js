@@ -4,6 +4,7 @@ import ErrorPage from "./ErrorPage";
 import GlobalLayout from "./Layouts/GlobalLayout";
 import HomePage from "./Pages/HomePage";
 import { useState, useEffect } from "react";
+import ToDoForm from "./Pages/ToDoFormPage";
 
 const urlEndpoint = process.env.REACT_APP_URL_ENDPOINT;
 
@@ -18,9 +19,22 @@ function App() {
       children: [
         {
           element: (
-            <HomePage setShouldRefetch={setShouldRefetch} toDoList={toDoList} />
+            <HomePage
+              setShouldRefetch={setShouldRefetch}
+              toDoList={toDoList}
+              urlEndpoint={urlEndpoint}
+            />
           ),
           index: true,
+        },
+        {
+          path: "/todo-form",
+          element: (
+            <ToDoForm
+              urlEndpoint={urlEndpoint}
+              setShouldRefetch={setShouldRefetch}
+            />
+          ),
         },
       ],
     },
