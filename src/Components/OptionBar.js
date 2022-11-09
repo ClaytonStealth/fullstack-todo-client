@@ -1,13 +1,23 @@
-import ToDoCard from "../Components/ToDoCard";
-import { useState } from "react";
-const HomePage = (props) => {
-  const { toDoList, urlEndpoint, setShouldRefetch } = props;
+import { useState, useEffect } from "react";
+
+const OptionBar = (props) => {
+  // const { generateUrlParams } = props;
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("creationDate");
   const [order, setOrder] = useState("asc");
+  const [urlParamString, setUrlParamString] = useState("");
+
+  useEffect(() => {
+    generateUrlParams(limit, page, sortBy, order);
+  }, [limit, page, sortBy, order]);
+
+  const generateUrlParams = (limit, page, sortBy, order) => {
+    let urlParams = `?limit=${limit}&page=${page}&sortBy=${sortBy}&order=${order}`;
+    setUrlParamString(urlParams);
+  };
   return (
-    <div>
+    <div className='option-bar'>
       <label>Limit</label>
       <input
         type='number'
@@ -24,7 +34,6 @@ const HomePage = (props) => {
           setPage(e.target.value);
         }}
       ></input>
-      <br />
       <label>Sort By</label>
       <select
         onChange={(e) => {
@@ -33,13 +42,8 @@ const HomePage = (props) => {
       >
         <option value={""}></option>
         <option value='id'>id</option>
-        <option value='title'>title</option>
-        <option value='description'>description</option>
-        <option value='isComplete'>isComplete</option>
         <option value='priority'>priority</option>
-        <option value='creationDate'>creationDate</option>
-        <option value='lastModified'>lastModified</option>
-        <option value='completedDate'>completedDate</option>
+        <option value='createdAt'>createdAt</option>
       </select>
       <label>Order</label>
       <select
@@ -51,19 +55,8 @@ const HomePage = (props) => {
         <option value='asc'>asc</option>
         <option value='desc'>desc</option>
       </select>
-      <h1>Fullstack ToDo Application</h1>
-      {toDoList.map((todo, index) => {
-        return (
-          <ToDoCard
-            todo={todo}
-            key={index}
-            urlEndpoint={urlEndpoint}
-            setShouldRefetch={setShouldRefetch}
-          />
-        );
-      })}
     </div>
   );
 };
 
-export default HomePage;
+export default OptionBar;
